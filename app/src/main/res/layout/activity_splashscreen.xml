@@ -7,4 +7,9 @@
     tools:context=".MainActivity"
     android:background="@drawable/background">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/fatwallet"
+        android:scaleType="centerInside"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
