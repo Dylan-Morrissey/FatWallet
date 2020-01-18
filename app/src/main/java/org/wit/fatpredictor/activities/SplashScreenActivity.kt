@@ -1,10 +1,11 @@
-package org.wit.fatpredictor
+package org.wit.fatpredictor.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
+import org.wit.fatpredictor.R
 import java.lang.Exception
 
 class SplashScreenActivity : AppCompatActivity(), AnkoLogger {
@@ -19,7 +20,7 @@ class SplashScreenActivity : AppCompatActivity(), AnkoLogger {
                 try {
                     Thread.sleep(4000)
 
-                    val intent = Intent(baseContext, MainActivity::class.java)
+                    val intent = Intent(baseContext, PredictActivity::class.java)
                     startActivity(intent)
                 } catch (e: Exception) {
                     e.printStackTrace()
