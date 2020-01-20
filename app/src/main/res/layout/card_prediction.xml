@@ -22,7 +22,7 @@
             android:contentDescription="" />
 
         <TextView
-            android:id="@+id/placemarkTitle"
+            android:id="@+id/predictWeight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -31,10 +31,10 @@
             android:textColor="@color/colorPrimary"/>
 
         <TextView
-            android:id="@+id/description"
+            android:id="@+id/predictHeight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/placemarkTitle"
+            android:layout_below="@id/predictWeight"
             android:layout_toEndOf="@+id/imageIcon"
             android:textColor="@color/colorPrimary"/>
 

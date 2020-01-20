@@ -5,13 +5,11 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_prediction_list.*
-import kotlinx.android.synthetic.main.card_prediction.view.*
 import org.jetbrains.anko.startActivityForResult
 import org.wit.fatpredictor.R
 import org.wit.fatpredictor.main.MainApp
-import org.wit.fatpredictor.models.PredictModel
+
 
 class PredictionListActivity : AppCompatActivity() {
 

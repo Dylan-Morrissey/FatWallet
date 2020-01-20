@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.card_prediction.view.*
 import org.wit.fatpredictor.R
-import org.wit.fatpredictor.helpers.readImage
 import org.wit.fatpredictor.helpers.readImageFromPath
 import org.wit.fatpredictor.models.PredictModel
 
@@ -14,7 +13,7 @@ interface PredictListener {
     fun onPlacemarkClick(prediction: PredictModel)
 }
 
-class PredictionAdapter constructor(private var placemarks: List<PredictModel>) :
+class PredictionAdapter constructor(private var predictions: List<PredictModel>) :
     RecyclerView.Adapter<PredictionAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
@@ -28,17 +27,17 @@ class PredictionAdapter constructor(private var placemarks: List<PredictModel>) 
     }
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
-        val placemark = placemarks[holder.adapterPosition]
-        holder.bind(placemark)
+        val prediction = predictions[holder.adapterPosition]
+        holder.bind(prediction)
     }
 
-    override fun getItemCount(): Int = placemarks.size
+    override fun getItemCount(): Int = predictions.size
 
     class MainHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(prediction: PredictModel) {
-            itemView.placemarkTitle.text = prediction.weight
-            itemView.description.text = prediction.height
+            itemView.predictWeight.text = prediction.weight
+            itemView.predictHeight.text = prediction.height
             itemView.imageIcon.setImageBitmap(readImageFromPath(itemView.context, prediction.image))
         }
     }
