@@ -25,6 +25,9 @@ class PredictActivity : AppCompatActivity(), AnkoLogger {
         app = application as MainApp
         info ("Predict Activity Started...")
 
+        toolbarAdd.title = title
+        setSupportActionBar(toolbarAdd)
+
         btnAdd.setOnClickListener(){
             predict.weight = weight.text.toString()
             predict.height = height.text.toString()

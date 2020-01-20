@@ -1,5 +1,6 @@
 package org.wit.fatpredictor.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
@@ -41,34 +42,11 @@ class PredictionListActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        recyclerView.adapter?.notifyDataSetChanged()
+        super.onActivityResult(requestCode, resultCode, data)
+    }
 }
 
-    class PredictionAdapter constructor(private var placemarks: List<PredictModel>) :
-        RecyclerView.Adapter<PredictionAdapter.MainHolder>() {
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
-            return MainHolder(
-                LayoutInflater.from(parent?.context).inflate(
-                    R.layout.card_prediction,
-                    parent,
-                    false
-                )
-            )
-        }
-
-        override fun onBindViewHolder(holder: MainHolder, position: Int) {
-            val placemark = placemarks[holder.adapterPosition]
-            holder.bind(placemark)
-        }
-
-        override fun getItemCount(): Int = placemarks.size
-
-        class MainHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-            fun bind(prediction: PredictModel) {
-                itemView.placemarkTitle.text = prediction.weight
-                itemView.description.text = prediction.height
-            }
-        }
-    }
 
