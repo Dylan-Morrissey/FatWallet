@@ -9,20 +9,23 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:background="@color/colorAccent">
 
         <TextView
             android:id="@+id/placemarkTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            android:textColor="@color/colorPrimary"/>
 
         <TextView
             android:id="@+id/description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/placemarkTitle" />
+            android:layout_below="@id/placemarkTitle"
+            android:textColor="@color/colorPrimary"/>
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
