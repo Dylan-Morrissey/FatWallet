@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">Fat Predictor</string>
+    <string name="app_name">FatWallet</string>
+    <string name="button_addPrediction">Add Prediction</string>
+    <string name="hint_predictionTitle">Prediction Title</string>
+    <string name="hint_weight">weight (lbs)</string>
+    <string name="hint_height">height (cm)</string>
+    <string name="select_image">Select image</string>
 </resources>
