@@ -21,10 +21,19 @@ class PredictionListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_prediction_list)
         app = application as MainApp
 
+        toolbar.title = title
+        setSupportActionBar(toolbar)
+
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = PredictionAdapter(app.predictions)
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
 }
 
     class PredictionAdapter constructor(private var placemarks: List<PredictModel>) :
