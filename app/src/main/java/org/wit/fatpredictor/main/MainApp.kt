@@ -12,5 +12,6 @@ class MainApp : Application(), AnkoLogger {
     override fun onCreate() {
         super.onCreate()
         info("Prediction started")
+        predictions.add(PredictModel("170", "180.72"))
     }
 }
