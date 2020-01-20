@@ -25,12 +25,17 @@ class PredictActivity : AppCompatActivity(), AnkoLogger {
         app = application as MainApp
         info ("Predict Activity Started...")
 
+        toolbarAdd.title = title
+        setSupportActionBar(toolbarAdd)
+
         btnAdd.setOnClickListener(){
             predict.weight = weight.text.toString()
             predict.height = height.text.toString()
             if (predict.weight.isNotEmpty()){
                 app.predictions.add(predict.copy())
                 info("add Button Pressed: $predict")
+                setResult(AppCompatActivity.RESULT_OK)
+                finish()
             } else {
                 toast("Please Enter a title")
             }
