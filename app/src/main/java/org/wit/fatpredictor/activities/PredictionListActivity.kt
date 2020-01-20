@@ -34,6 +34,13 @@ class PredictionListActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item?.itemId) {
+            R.id.item_add -> startActivityForResult<PredictActivity>(0)
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 }
 
     class PredictionAdapter constructor(private var placemarks: List<PredictModel>) :

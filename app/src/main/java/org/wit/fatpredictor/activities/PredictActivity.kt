@@ -31,6 +31,8 @@ class PredictActivity : AppCompatActivity(), AnkoLogger {
             if (predict.weight.isNotEmpty()){
                 app.predictions.add(predict.copy())
                 info("add Button Pressed: $predict")
+                setResult(AppCompatActivity.RESULT_OK)
+                finish()
             } else {
                 toast("Please Enter a title")
             }
