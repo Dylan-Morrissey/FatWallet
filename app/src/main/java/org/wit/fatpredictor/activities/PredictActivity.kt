@@ -3,12 +3,15 @@ package org.wit.fatpredictor.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_prediction.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 import org.wit.fatpredictor.R
 import org.wit.fatpredictor.helpers.readImage
+import org.wit.fatpredictor.helpers.readImageFromPath
 import org.wit.fatpredictor.helpers.showImagePicker
 import org.wit.fatpredictor.main.MainApp
 import org.wit.fatpredictor.models.PredictModel
@@ -18,6 +21,7 @@ class PredictActivity : AppCompatActivity(), AnkoLogger {
     var predict = PredictModel()
     lateinit var app : MainApp
     val IMAGE_REQUEST = 1
+    var edit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,22 +32,48 @@ class PredictActivity : AppCompatActivity(), AnkoLogger {
         toolbarAdd.title = title
         setSupportActionBar(toolbarAdd)
 
-        btnAdd.setOnClickListener(){
-            predict.weight = weight.text.toString()
-            predict.height = height.text.toString()
-            if (predict.weight.isNotEmpty()){
-                app.predictions.add(predict.copy())
-                info("add Button Pressed: $predict")
-                setResult(AppCompatActivity.RESULT_OK)
-                finish()
-            } else {
-                toast("Please Enter a title")
-            }
+        if(intent.hasExtra("predict_edit")) {
+            edit = true
+            predict = intent.extras?.getParcelable<PredictModel>("predict_edit")!!
+            weight.setText(predict.weight)
+            height.setText(predict.height)
+            btnAdd.setText(R.string.save)
+            imageView.setImageBitmap(readImageFromPath(this, predict.image))
         }
 
+        btnAdd.setOnClickListener() {
+            predict.weight = weight.text.toString()
+            predict.height = height.text.toString()
+            if (predict.weight.isEmpty()) {
+                toast("Please Enter a Correct details")
+            } else {
+                if (edit) {
+                    app.predictions.update(predict.copy())
+                } else {
+                    app.predictions.create(predict.copy())
+                }
+            }
+            info("add Button Pressed: $predict")
+            setResult(AppCompatActivity.RESULT_OK)
+            finish()
+        }
         imageView.setOnClickListener {
             showImagePicker(this, IMAGE_REQUEST)
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.item_cancel -> {
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_prediction, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
