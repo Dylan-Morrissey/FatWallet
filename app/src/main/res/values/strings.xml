@@ -7,5 +7,7 @@
     <string name="select_image">Select image</string>
     <string name="menu_add">Add</string>
     <string name="menu_cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="change_image">Change Image</string>
 
 </resources>
