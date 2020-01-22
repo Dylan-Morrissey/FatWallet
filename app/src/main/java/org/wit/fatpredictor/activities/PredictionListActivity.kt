@@ -6,12 +6,14 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_prediction_list.*
+import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.startActivityForResult
 import org.wit.fatpredictor.R
 import org.wit.fatpredictor.main.MainApp
+import org.wit.fatpredictor.models.PredictModel
 
 
-class PredictionListActivity : AppCompatActivity() {
+class PredictionListActivity : AppCompatActivity(), PredictListener {
 
     lateinit var app: MainApp
 
@@ -25,12 +27,16 @@ class PredictionListActivity : AppCompatActivity() {
 
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = PredictionAdapter(app.predictions)
+        loadPredictons()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onPredictionClick(prediction: PredictModel) {
+        startActivityForResult(intentFor<PredictActivity>().putExtra("predict_edit", prediction), 0)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -41,8 +47,17 @@ class PredictionListActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        recyclerView.adapter?.notifyDataSetChanged()
+        loadPredictons()
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun loadPredictons() {
+        showPredictions(app.predictions.findAll())
+    }
+
+    fun showPredictions(predictons: List<PredictModel>) {
+        recyclerView.adapter = PredictionAdapter(predictons, this)
+        recyclerView.adapter?.notifyDataSetChanged()
     }
 }
 
