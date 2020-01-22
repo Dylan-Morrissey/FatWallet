@@ -9,6 +9,7 @@ internal fun getId(): Long {
     return lastId++
 }
 
+//Replaced by JSON store
 class PredictionMemStore : PredictionStore, AnkoLogger {
 
     val predictions = ArrayList<PredictModel>()

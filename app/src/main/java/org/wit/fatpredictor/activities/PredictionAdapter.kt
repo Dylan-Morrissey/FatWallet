@@ -8,7 +8,6 @@ import kotlinx.android.synthetic.main.card_prediction.view.*
 import org.wit.fatpredictor.R
 import org.wit.fatpredictor.helpers.readImageFromPath
 import org.wit.fatpredictor.models.PredictModel
-import javax.xml.transform.ErrorListener
 
 interface PredictListener {
     fun onPredictionClick(prediction: PredictModel)
