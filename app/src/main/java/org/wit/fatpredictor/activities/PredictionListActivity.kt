@@ -27,7 +27,7 @@ class PredictionListActivity : AppCompatActivity(), PredictListener {
 
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = PredictionAdapter(app.predictions.findAll(), this)
+        loadPredictons()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -47,8 +47,17 @@ class PredictionListActivity : AppCompatActivity(), PredictListener {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        recyclerView.adapter?.notifyDataSetChanged()
+        loadPredictons()
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun loadPredictons() {
+        showPredictions(app.predictions.findAll())
+    }
+
+    fun showPredictions(predictons: List<PredictModel>) {
+        recyclerView.adapter = PredictionAdapter(predictons, this)
+        recyclerView.adapter?.notifyDataSetChanged()
     }
 }
 
