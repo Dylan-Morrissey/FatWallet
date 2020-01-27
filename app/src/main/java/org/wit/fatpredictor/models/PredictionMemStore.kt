@@ -1,3 +1,4 @@
+/*
 package org.wit.fatpredictor.models
 
 import org.jetbrains.anko.AnkoLogger
@@ -38,3 +39,5 @@ class PredictionMemStore : PredictionStore, AnkoLogger {
         predictions.forEach { info("${it}") }
     }
 }
+
+ */
