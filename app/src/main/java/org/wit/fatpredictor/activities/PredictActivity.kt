@@ -31,13 +31,14 @@ class PredictActivity : AppCompatActivity(), AnkoLogger {
 
         toolbarAdd.title = title
         setSupportActionBar(toolbarAdd)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         if(intent.hasExtra("predict_edit")) {
             edit = true
             predict = intent.extras?.getParcelable<PredictModel>("predict_edit")!!
             weight.setText(predict.weight)
             height.setText(predict.height)
-            btnAdd.setText(R.string.save)
+            btnAdd.setText(R.string.save_prediction)
             imageView.setImageBitmap(readImageFromPath(this, predict.image))
         }
 
