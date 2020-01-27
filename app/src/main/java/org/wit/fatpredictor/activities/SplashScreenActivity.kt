@@ -20,7 +20,7 @@ class SplashScreenActivity : AppCompatActivity(), AnkoLogger {
                 try {
                     Thread.sleep(2000)
 
-                    val intent = Intent(baseContext, PredictionListActivity::class.java)
+                    val intent = Intent(baseContext, LoginActivity::class.java)
                     startActivity(intent)
                 } catch (e: Exception) {
                     e.printStackTrace()
