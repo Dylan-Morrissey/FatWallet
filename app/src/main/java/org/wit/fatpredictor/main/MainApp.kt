@@ -3,8 +3,8 @@ package org.wit.fatpredictor.main
 import android.app.Application
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
-import org.wit.fatpredictor.models.PredictionJSONStore
 import org.wit.fatpredictor.models.PredictionStore
+import org.wit.fatpredictor.room.PredictionStoreRoom
 
 class MainApp : Application(), AnkoLogger {
 
@@ -12,7 +12,7 @@ class MainApp : Application(), AnkoLogger {
 
     override fun onCreate() {
         super.onCreate()
-        predictions = PredictionJSONStore(applicationContext)
+        predictions = PredictionStoreRoom(applicationContext)
         info("Prediction started")
     }
 }

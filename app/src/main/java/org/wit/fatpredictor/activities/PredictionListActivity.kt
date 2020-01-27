@@ -6,8 +6,10 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_prediction_list.*
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.startActivityForResult
+import org.jetbrains.anko.uiThread
 import org.wit.fatpredictor.R
 import org.wit.fatpredictor.main.MainApp
 import org.wit.fatpredictor.models.PredictModel
@@ -52,7 +54,12 @@ class PredictionListActivity : AppCompatActivity(), PredictListener {
     }
 
     private fun loadPredictons() {
-        showPredictions(app.predictions.findAll())
+        doAsync {
+            val predictions = app.predictions.findAll()
+            uiThread {
+                showPredictions(predictions)
+            }
+        }
     }
 
     fun showPredictions(predictons: List<PredictModel>) {

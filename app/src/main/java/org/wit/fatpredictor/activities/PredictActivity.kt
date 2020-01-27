@@ -6,9 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_prediction.*
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
-import org.jetbrains.anko.toast
+import org.jetbrains.anko.*
 import org.wit.fatpredictor.R
 import org.wit.fatpredictor.helpers.readImage
 import org.wit.fatpredictor.helpers.readImageFromPath
@@ -48,10 +46,15 @@ class PredictActivity : AppCompatActivity(), AnkoLogger {
             if (predict.weight.isEmpty()) {
                 toast("Please Enter a Correct details")
             } else {
-                if (edit) {
-                    app.predictions.update(predict.copy())
-                } else {
-                    app.predictions.create(predict.copy())
+                doAsync {
+                    if (edit) {
+                        app.predictions.update(predict.copy())
+                    } else {
+                        app.predictions.create(predict.copy())
+                    }
+                    uiThread {
+                        finish()
+                    }
                 }
             }
             info("add Button Pressed: $predict")
