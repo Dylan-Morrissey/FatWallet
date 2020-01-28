@@ -6,10 +6,7 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_prediction_list.*
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.startActivityForResult
-import org.jetbrains.anko.uiThread
+import org.jetbrains.anko.*
 import org.wit.fatpredictor.R
 import org.wit.fatpredictor.main.MainApp
 import org.wit.fatpredictor.models.PredictModel
@@ -44,6 +41,7 @@ class PredictionListActivity : AppCompatActivity(), PredictListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item?.itemId) {
             R.id.item_add -> startActivityForResult<PredictActivity>(0)
+            R.id.item_logout -> startActivity(Intent(baseContext, LoginActivity::class.java))
         }
         return super.onOptionsItemSelected(item)
     }

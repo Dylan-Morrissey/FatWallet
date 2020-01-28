@@ -6,5 +6,12 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
     android:id="@+id/item_add"
     android:icon="@android:drawable/ic_menu_add"
     android:title="@string/menu_add"
-    app:showAsAction="always" />
+    app:showAsAction="never" />
+
+<item
+    android:id="@+id/item_logout"
+    android:title="@string/menu_logout"
+    app:showAsAction="never"
+    />
+
 </menu>
