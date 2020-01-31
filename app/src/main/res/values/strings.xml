@@ -9,4 +9,15 @@
     <string name="menu_cancel">Cancel</string>
     <string name="save_prediction">Save</string>
     <string name="change_image">Change Image</string>
+    <string name="email_address">Email</string>
+    <string name="user_password">Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="sign_in">Sign in</string>
+    <string name="Sign_up">Sign up</string>
+    <string name="menu_logout">Logout</string>
+    <string name="new_username">Username</string>
+    <string name="new_emailaddress">Email Address</string>
+    <string name="new_password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="back_to_signin">Back to Sign In</string>
 </resources>

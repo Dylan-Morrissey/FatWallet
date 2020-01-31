@@ -20,6 +20,15 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".activities.LoginActivity"
+            android:label="login">
+
+        </activity>
+        <activity android:name=".activities.SignUpActivity"
+            android:label="@string/sign_in">
+
+        </activity>
+
         <activity android:name=".activities.PredictionListActivity"
             android:label="prediction_list">
         </activity>
