@@ -27,12 +27,12 @@ class LoginActivity : AppCompatActivity(), AnkoLogger {
             startActivity(intent)
         }
         */
-        /*
+
         btnSignUp.setOnClickListener() {
             val intent = Intent(baseContext, SignUpActivity::class.java)
             startActivity(intent)
         }
-        */
+
         btnSignIn.setOnClickListener() {
             showProgress()
             val email = loginEmail.text.toString()
