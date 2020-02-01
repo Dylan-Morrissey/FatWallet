@@ -11,15 +11,25 @@ import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 import org.wit.fatpredictor.R
+import org.wit.fatpredictor.main.MainApp
+import org.wit.fatpredictor.models.PredictionFireStore
 
 class LoginActivity : AppCompatActivity(), AnkoLogger {
 
+    lateinit var app: MainApp
+    var auth:FirebaseAuth = FirebaseAuth.getInstance()
+    var fireStore: PredictionFireStore? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        var auth:FirebaseAuth = FirebaseAuth.getInstance()
+
+        app = application as MainApp
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         info("Login Activity Started...")
         progressBar.visibility = GONE
+        if (app.predictions is PredictionFireStore) {
+            fireStore = app.predictions as PredictionFireStore
+        }
 
         /*
         btnForgotPassword.setOnClickListener() {
@@ -39,13 +49,22 @@ class LoginActivity : AppCompatActivity(), AnkoLogger {
             val password = loginPassword.text.toString()
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this) {task ->
                 if (task.isSuccessful){
-                    val intent = Intent(baseContext, PredictionListActivity::class.java)
-                    startActivity(intent)
+                    if (fireStore != null){
+                        fireStore!!.fetchPredictions {
+                            hideProgress()
+                            val intent = Intent(baseContext, PredictionListActivity::class.java)
+                            startActivity(intent)
+                        }
+                    } else {
+                        hideProgress()
+                        val intent = Intent(baseContext, PredictionListActivity::class.java)
+                        startActivity(intent)
+                    }
                 } else {
-                    toast("Sign In Failed")
+                    hideProgress()
+                    toast("Sign In Failed: ${task.exception?.message}")
                 }
             }
-            hideProgress()
         }
     }
 

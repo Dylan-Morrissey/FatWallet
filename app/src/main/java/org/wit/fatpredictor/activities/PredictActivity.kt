@@ -48,9 +48,9 @@ class PredictActivity : AppCompatActivity(), AnkoLogger {
             } else {
                 doAsync {
                     if (edit) {
-                        app.predictions.update(predict.copy())
+                        app.predictions.update(predict)
                     } else {
-                        app.predictions.create(predict.copy())
+                        app.predictions.create(predict)
                     }
                     uiThread {
                         finish()

@@ -8,6 +8,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 @Entity
 data class PredictModel(@PrimaryKey(autoGenerate = true) var id: Long = 0,
+                        var fbId: String = "",
                         var weight: String = "",
                         var height: String = "",
                         var image: String = "",

@@ -22,14 +22,16 @@ class SignUpActivity : AppCompatActivity(), AnkoLogger {
 
         btnRegester.setOnClickListener() {
             //val userName = newUsername.text.toString()
+            showProgress()
             val email = newEmail.text.toString()
             val password = newPassword.text.toString()
-
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
+                    hideProgress()
                     val intent = Intent(baseContext, PredictionListActivity::class.java)
                     startActivity(intent)
                 } else {
+                    hideProgress()
                     toast("Sign Up Failed: ${task.exception?.message}")
                 }
             }
@@ -41,5 +43,13 @@ class SignUpActivity : AppCompatActivity(), AnkoLogger {
             startActivity(intent)
         }
 
+    }
+
+    fun showProgress() {
+        progressBarSignUp.visibility = View.VISIBLE
+    }
+
+    fun hideProgress(){
+        progressBarSignUp.visibility = View.GONE
     }
 }

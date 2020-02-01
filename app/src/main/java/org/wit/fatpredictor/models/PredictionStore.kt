@@ -6,4 +6,5 @@ interface PredictionStore {
     fun update(prediction: PredictModel)
     fun delete(prediction: PredictModel)
     fun findById (id:Long): PredictModel?
+    fun clear()
 }
