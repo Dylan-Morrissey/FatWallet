@@ -43,18 +43,14 @@ class PredictActivity : AppCompatActivity(), AnkoLogger {
         btnAdd.setOnClickListener() {
             predict.weight = weight.text.toString()
             predict.height = height.text.toString()
-            if (predict.weight.isEmpty()) {
-                toast("Please Enter a Correct details")
-            } else {
-                doAsync {
-                    if (edit) {
-                        app.predictions.update(predict)
-                    } else {
-                        app.predictions.create(predict)
-                    }
-                    uiThread {
-                        finish()
-                    }
+            doAsync {
+                if (edit) {
+                    app.predictions.update(predict)
+                } else {
+                       app.predictions.create(predict)
+                }
+                uiThread {
+                    finish()
                 }
             }
             info("add Button Pressed: $predict")

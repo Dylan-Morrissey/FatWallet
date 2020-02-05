@@ -13,7 +13,6 @@ data class PredictModel(@PrimaryKey(autoGenerate = true) var id: Long = 0,
                         var height: String = "",
                         var image: String = "",
                         var age : Int = 0,
-                        var gender: Char = 'M',
                         var bodyfat: String = "0-0") : Parcelable
 
 
