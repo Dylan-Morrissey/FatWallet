@@ -35,4 +35,8 @@ class PredictionStoreRoom(val context: Context) : PredictionStore {
     override fun delete(placemark: PredictModel) {
         dao.deletePrediction(placemark)
     }
+
+    override fun clear(){
+    }
+
 }
