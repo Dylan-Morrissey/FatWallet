@@ -5,23 +5,37 @@
     <application
         android:allowBackup="true"
         android:name=".main.MainApp"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/fwicon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".activities.SplashScreenActivity"
             android:theme="@style/SplashTheme"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.PredictionListActivity">
+
+        <activity android:name=".activities.LoginActivity"
+            android:label="login">
+
+        </activity>
+        <activity android:name=".activities.SignUpActivity"
+            android:label="@string/sign_in">
+
+        </activity>
+
+        <activity android:name=".activities.PredictionListActivity"
+            android:label="prediction_list">
         </activity>
         <activity android:name=".activities.PredictActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.PredictionListActivity">
+            </meta-data>
         </activity>
     </application>
 

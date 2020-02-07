@@ -1,3 +1,5 @@
+/*
+
 package org.wit.fatpredictor.models
 
 import android.content.Context
@@ -14,10 +16,11 @@ val JSON_FILE = "prerdiction.json"
 val gsonBuilder = GsonBuilder().setPrettyPrinting().create()
 val listType = object : TypeToken<java.util.ArrayList<PredictModel>>() {}.type
 
+
+
 fun generateRandomId(): Long {
   return Random().nextLong()
 }
-
 class PredictionJSONStore : PredictionStore, AnkoLogger {
 
   val context: Context
@@ -61,3 +64,4 @@ class PredictionJSONStore : PredictionStore, AnkoLogger {
     predictions = Gson().fromJson(jsonString, listType)
   }
 }
+ */
