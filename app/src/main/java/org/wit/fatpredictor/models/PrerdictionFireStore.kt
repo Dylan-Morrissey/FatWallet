@@ -1,9 +1,15 @@
 package org.wit.fatpredictor.models
 
 import android.content.Context
+import android.graphics.Bitmap
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import org.jetbrains.anko.AnkoLogger
+import org.wit.fatpredictor.helpers.readImageFromPath
+import java.io.ByteArrayOutputStream
+import java.io.File
 
 
 class PredictionFireStore(val context: Context) : PredictionStore, AnkoLogger {
@@ -11,6 +17,7 @@ class PredictionFireStore(val context: Context) : PredictionStore, AnkoLogger {
     val predictions = ArrayList<PredictModel>()
     lateinit var userId: String
     lateinit var db: DatabaseReference
+    lateinit var st: StorageReference
 
     override fun findAll(): List<PredictModel> {
         return predictions
@@ -27,6 +34,7 @@ class PredictionFireStore(val context: Context) : PredictionStore, AnkoLogger {
             prediction.fbId = key
             predictions.add(prediction)
             db.child("users").child(userId).child("predictions").child(key).setValue(prediction)
+            updateImage(prediction)
         }
     }
 
@@ -38,9 +46,11 @@ class PredictionFireStore(val context: Context) : PredictionStore, AnkoLogger {
             foundPrediction.image = prediction.image
         }
         db.child("users").child(userId).child("predictions").child(prediction.fbId).setValue(prediction)
+        if((prediction.image.length) > 0 && (prediction.image[0] != 'h')) {
+            updateImage(prediction)
+        }
 
     }
-
 
     override fun delete(prediction: PredictModel) {
         db.child("users").child(userId).child("predictions").child(prediction.fbId).removeValue()
@@ -49,6 +59,31 @@ class PredictionFireStore(val context: Context) : PredictionStore, AnkoLogger {
 
     override fun clear() {
         predictions.clear()
+    }
+
+    fun updateImage(prediction: PredictModel) {
+        if (prediction.image != "") {
+            val fileName = File(prediction.image)
+            val imageName = fileName.getName()
+
+            var imageRef = st.child(userId + '/' + imageName)
+            val baos = ByteArrayOutputStream()
+            val bitmap = readImageFromPath(context, prediction.image)
+
+            bitmap?.let {
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                val data = baos.toByteArray()
+                val uploadTask = imageRef.putBytes(data)
+                uploadTask.addOnFailureListener {
+                    println(it.message)
+                }.addOnSuccessListener { taskSnapshot ->
+                    taskSnapshot.metadata!!.reference!!.downloadUrl.addOnSuccessListener {
+                        prediction.image = it.toString()
+                        db.child("users").child(userId).child("predictions").child(prediction.fbId).setValue(prediction)
+                    }
+                }
+            }
+        }
     }
 
     fun fetchPredictions(predictionsReady: () -> Unit) {
@@ -62,6 +97,7 @@ class PredictionFireStore(val context: Context) : PredictionStore, AnkoLogger {
         }
         userId = FirebaseAuth.getInstance().currentUser!!.uid
         db = FirebaseDatabase.getInstance().reference
+        st = FirebaseStorage.getInstance().reference
         predictions.clear()
         db.child("users").child(userId).child("predictions").addListenerForSingleValueEvent(valueEventListener)
     }
