@@ -40,6 +40,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'androidx.room:room-runtime:2.2.5'
     implementation 'com.google.firebase:firebase-auth:19.3.0'
+    implementation 'com.github.bumptech.glide:glide:4.10.0'
+    implementation 'com.google.firebase:firebase-storage:19.1.1'
     kapt 'androidx.room:room-compiler:2.2.5'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
