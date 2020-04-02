@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_prediction.*
 import org.jetbrains.anko.*
 import org.wit.fatpredictor.R
@@ -37,7 +38,8 @@ class PredictActivity : AppCompatActivity(), AnkoLogger {
             weight.setText(predict.weight)
             height.setText(predict.height)
             btnAdd.setText(R.string.save_prediction)
-            imageView.setImageBitmap(readImageFromPath(this, predict.image))
+            //imageView.setImageBitmap(readImageFromPath(this, predict.image))
+            Glide.with(this).load(predict.image).into(imageView)
         }
 
         btnAdd.setOnClickListener() {

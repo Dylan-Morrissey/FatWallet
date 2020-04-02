@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.card_prediction.view.*
 import org.wit.fatpredictor.R
 import org.wit.fatpredictor.helpers.readImageFromPath
@@ -38,7 +39,8 @@ class PredictionAdapter constructor(private var predictions: List<PredictModel>,
         fun bind(prediction: PredictModel, listener: PredictListener) {
             itemView.predictWeight.text = prediction.weight
             itemView.predictHeight.text = prediction.height
-            itemView.imageIcon.setImageBitmap(readImageFromPath(itemView.context, prediction.image))
+            Glide.with(itemView.context).load(prediction.image).into(itemView.imageIcon);
+            //itemView.imageIcon.setImageBitmap(readImageFromPath(itemView.context, prediction.image))
             itemView.setOnClickListener { listener.onPredictionClick(prediction) }
         }
     }
