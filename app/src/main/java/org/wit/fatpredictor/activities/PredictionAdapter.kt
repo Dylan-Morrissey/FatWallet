@@ -37,8 +37,9 @@ class PredictionAdapter constructor(private var predictions: List<PredictModel>,
     class MainHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(prediction: PredictModel, listener: PredictListener) {
-            itemView.predictWeight.text = prediction.weight
-            itemView.predictHeight.text = prediction.height
+            itemView.predictWeight.text = prediction.weight + " lbs"
+            itemView.predictHeight.text = prediction.height + " cm"
+            itemView.bodyfatPer.text = prediction.bodyfat + "%"
             Glide.with(itemView.context).load(prediction.image).into(itemView.imageIcon);
             //itemView.imageIcon.setImageBitmap(readImageFromPath(itemView.context, prediction.image))
             itemView.setOnClickListener { listener.onPredictionClick(prediction) }

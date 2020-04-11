@@ -89,6 +89,23 @@
                         android:padding="8dp"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/age"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="2"
+                        android:layout_height="45dp"
+                        android:layout_margin="8dp"
+                        android:autofillHints=""
+                        android:background="@drawable/edit_background"
+                        android:hint="@string/predict_age"
+                        android:textAlignment="center"
+                        android:inputType="text"
+                        android:maxLength="25"
+                        android:maxLines="1"
+                        android:padding="8dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <Button

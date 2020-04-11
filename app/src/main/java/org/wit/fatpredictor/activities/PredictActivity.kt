@@ -1,19 +1,27 @@
 package org.wit.fatpredictor.activities
 
+import android.R.attr.bitmap
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_prediction.*
-import org.jetbrains.anko.*
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.info
+import org.jetbrains.anko.uiThread
+import org.tensorflow.lite.DataType
+import org.tensorflow.lite.support.image.ImageProcessor
+import org.tensorflow.lite.support.image.TensorImage
+import org.tensorflow.lite.support.image.ops.ResizeOp
 import org.wit.fatpredictor.R
 import org.wit.fatpredictor.helpers.readImage
-import org.wit.fatpredictor.helpers.readImageFromPath
 import org.wit.fatpredictor.helpers.showImagePicker
 import org.wit.fatpredictor.main.MainApp
 import org.wit.fatpredictor.models.PredictModel
+
 
 class PredictActivity : AppCompatActivity(), AnkoLogger {
 
@@ -21,6 +29,7 @@ class PredictActivity : AppCompatActivity(), AnkoLogger {
     lateinit var app : MainApp
     val IMAGE_REQUEST = 1
     var edit = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +46,7 @@ class PredictActivity : AppCompatActivity(), AnkoLogger {
             predict = intent.extras?.getParcelable<PredictModel>("predict_edit")!!
             weight.setText(predict.weight)
             height.setText(predict.height)
+            age.setText(predict.age.toString())
             btnAdd.setText(R.string.save_prediction)
             //imageView.setImageBitmap(readImageFromPath(this, predict.image))
             Glide.with(this).load(predict.image).into(imageView)
@@ -45,6 +55,8 @@ class PredictActivity : AppCompatActivity(), AnkoLogger {
         btnAdd.setOnClickListener() {
             predict.weight = weight.text.toString()
             predict.height = height.text.toString()
+            predict.age = age.text.toString().toInt()
+            predict.bodyfat = "12-15"
             doAsync {
                 if (edit) {
                     app.predictions.update(predict)
