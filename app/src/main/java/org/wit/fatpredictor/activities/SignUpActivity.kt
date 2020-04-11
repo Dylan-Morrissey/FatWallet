@@ -11,6 +11,7 @@ import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 import org.wit.fatpredictor.R
+import org.wit.fatpredictor.models.PredictModel
 
 class SignUpActivity : AppCompatActivity(), AnkoLogger {
 
@@ -19,6 +20,8 @@ class SignUpActivity : AppCompatActivity(), AnkoLogger {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
         info("SignIn Activity Started...")
+        var predict = PredictModel()
+        hideProgress()
 
         btnRegester.setOnClickListener() {
             //val userName = newUsername.text.toString()
@@ -28,6 +31,7 @@ class SignUpActivity : AppCompatActivity(), AnkoLogger {
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     hideProgress()
+
                     val intent = Intent(baseContext, PredictionListActivity::class.java)
                     startActivity(intent)
                 } else {

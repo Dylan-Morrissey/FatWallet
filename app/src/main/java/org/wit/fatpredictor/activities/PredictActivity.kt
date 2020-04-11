@@ -4,16 +4,17 @@ import android.R.attr.bitmap
 import android.app.Activity
 import android.content.Intent
 import android.content.res.AssetFileDescriptor
+import android.graphics.Bitmap
+import android.graphics.Insets.add
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_prediction.*
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.info
-import org.jetbrains.anko.uiThread
+import org.jetbrains.anko.*
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
@@ -24,6 +25,8 @@ import org.wit.fatpredictor.helpers.showImagePicker
 import org.wit.fatpredictor.main.MainApp
 import org.wit.fatpredictor.models.PredictModel
 import org.tensorflow.lite.Interpreter
+import org.tensorflow.lite.support.image.ops.ResizeWithCropOrPadOp
+import org.tensorflow.lite.support.image.ops.Rot90Op
 import java.io.FileInputStream
 import java.io.IOException
 import java.nio.MappedByteBuffer
@@ -34,7 +37,7 @@ import java.nio.channels.FileChannel
 class PredictActivity : AppCompatActivity(), AnkoLogger {
 
     var predict = PredictModel()
-    lateinit var app : MainApp
+    lateinit var app: MainApp
     val IMAGE_REQUEST = 1
     var edit = false
 
@@ -42,44 +45,64 @@ class PredictActivity : AppCompatActivity(), AnkoLogger {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_prediction)
         app = application as MainApp
-        info ("Predict Activity Started...")
+        info("Predict Activity Started...")
 
         toolbarAdd.title = title
         setSupportActionBar(toolbarAdd)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        btnDel.setVisibility(View.INVISIBLE)
 
-        if(intent.hasExtra("predict_edit")) {
+        if (intent.hasExtra("predict_edit")) {
             edit = true
             predict = intent.extras?.getParcelable<PredictModel>("predict_edit")!!
             weight.setText(predict.weight)
             height.setText(predict.height)
             age.setText(predict.age.toString())
             btnAdd.setText(R.string.save_prediction)
+            predictedBodyfatText.setText("Predicted Bodyfat range:  " + predict.bodyfat + "%")
             //imageView.setImageBitmap(readImageFromPath(this, predict.image))
             Glide.with(this).load(predict.image).into(imageView)
+            btnDel.setVisibility(View.VISIBLE)
+
         }
 
         btnAdd.setOnClickListener() {
-            predict.weight = weight.text.toString()
-            predict.height = height.text.toString()
-            predict.age = age.text.toString().toInt()
-            predict.bodyfat = predictonFromModel()
-            doAsync {
-                if (edit) {
-                    app.predictions.update(predict)
-                } else {
-                       app.predictions.create(predict)
-                }
-                uiThread {
-                    finish()
-                }
+            if (weight.text.toString().toInt() < 5 || weight.text.toString().toInt() >1400) {
+                toast("Please enter A valid weight.")
             }
-            info("add Button Pressed: $predict")
-            setResult(AppCompatActivity.RESULT_OK)
-            finish()
+            else if (height.text.toString().toInt() < 55 || height.text.toString().toInt() > 300) {
+                toast("Please enter a valid Height")
+            } else if (age.text.toString().toInt() < 15 || age.text.toString().toInt() > 150) {
+                toast("Please enter a valid age.")
+            }
+            else {
+                predict.weight = weight.text.toString()
+                predict.height = height.text.toString()
+                predict.age = age.text.toString().toInt()
+                predict.bodyfat = predictonFromModel()
+                doAsync {
+                    if (edit) {
+                        app.predictions.update(predict)
+                    } else {
+                        app.predictions.create(predict)
+                    }
+                    uiThread {
+                        finish()
+                    }
+                }
+                info("add Button Pressed: $predict")
+                setResult(AppCompatActivity.RESULT_OK)
+                finish()
+            }
+
+
         }
         imageView.setOnClickListener {
             showImagePicker(this, IMAGE_REQUEST)
+        }
+
+        btnDel.setOnClickListener() {
+            doDelete()
         }
     }
 
@@ -120,15 +143,30 @@ class PredictActivity : AppCompatActivity(), AnkoLogger {
         return fileChannel.map(FileChannel.MapMode.READ_ONLY, startoffset, declaredLength)
     }
 
-    fun predictonFromModel (): String {
+    fun predictonFromModel(): String {
+        val age = predict.age / 49
+        val weight = predict.weight.toInt() / 307
+        val height = predict.height.toInt() / 198.12
+        val numericInput = listOf(age, weight, height)
         val interpreter = Interpreter(loadModelFile())
-        val inputs = 1
+        val inputs = arrayOf(numericInput, predict.image)
         val output = 1
-        //interpreter.run(inputs, outputs)
+        //interpreter.run(inputs, output)
         return "10-12"
     }
 
+    fun doDelete() {
+        doAsync {
+            app.predictions.delete(predict)
+            finish()
+        }
+    }
 
-
-
+    private fun loadImage(sensorOrientation: Int) {
+        val width = imageView.getWidth()
+        val height = imageView.getHeight()
+        val imageProcessor = ImageProcessor.Builder()
+            // Resize using Bilinear or Nearest neighbour
+            .add(ResizeOp(200, 200, ResizeOp.ResizeMethod.BILINEAR)).build()
+    }
 }
