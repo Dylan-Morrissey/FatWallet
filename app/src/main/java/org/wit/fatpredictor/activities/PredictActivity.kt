@@ -1,7 +1,9 @@
 package org.wit.fatpredictor.activities
 
 import android.R.attr.bitmap
+import android.app.Activity
 import android.content.Intent
+import android.content.res.AssetFileDescriptor
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -21,15 +23,20 @@ import org.wit.fatpredictor.helpers.readImage
 import org.wit.fatpredictor.helpers.showImagePicker
 import org.wit.fatpredictor.main.MainApp
 import org.wit.fatpredictor.models.PredictModel
+import org.tensorflow.lite.Interpreter
+import java.io.FileInputStream
+import java.io.IOException
+import java.nio.MappedByteBuffer
+import java.nio.channels.FileChannel
 
 
+@Suppress("DEPRECATION")
 class PredictActivity : AppCompatActivity(), AnkoLogger {
 
     var predict = PredictModel()
     lateinit var app : MainApp
     val IMAGE_REQUEST = 1
     var edit = false
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +63,7 @@ class PredictActivity : AppCompatActivity(), AnkoLogger {
             predict.weight = weight.text.toString()
             predict.height = height.text.toString()
             predict.age = age.text.toString().toInt()
-            predict.bodyfat = "12-15"
+            predict.bodyfat = predictonFromModel()
             doAsync {
                 if (edit) {
                     app.predictions.update(predict)
@@ -101,4 +108,27 @@ class PredictActivity : AppCompatActivity(), AnkoLogger {
             }
         }
     }
+
+    @Throws(IOException::class)
+    private fun loadModelFile(): MappedByteBuffer {
+        val MODEL_ASSETS_PATH = "model.tflite"
+        val assetFileDescriptor = assets.openFd(MODEL_ASSETS_PATH)
+        val fileInputStream = FileInputStream(assetFileDescriptor.getFileDescriptor())
+        val fileChannel = fileInputStream.getChannel()
+        val startoffset = assetFileDescriptor.getStartOffset()
+        val declaredLength = assetFileDescriptor.getDeclaredLength()
+        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startoffset, declaredLength)
+    }
+
+    fun predictonFromModel (): String {
+        val interpreter = Interpreter(loadModelFile())
+        val inputs = 1
+        val output = 1
+        //interpreter.run(inputs, outputs)
+        return "10-12"
+    }
+
+
+
+
 }
