@@ -26,18 +26,24 @@ class SignUpActivity : AppCompatActivity(), AnkoLogger {
         btnRegester.setOnClickListener() {
             //val userName = newUsername.text.toString()
             showProgress()
-            val email = newEmail.text.toString()
-            val password = newPassword.text.toString()
-            auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    hideProgress()
+            if(newEmail.text.toString().isEmpty() || newPassword.text.toString().isEmpty()){
+                toast("Please fill in required fields.")
+                hideProgress()
+            } else {
+                val email = newEmail.text.toString()
+                val password = newPassword.text.toString()
+                auth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            hideProgress()
 
-                    val intent = Intent(baseContext, PredictionListActivity::class.java)
-                    startActivity(intent)
-                } else {
-                    hideProgress()
-                    toast("Sign Up Failed: ${task.exception?.message}")
-                }
+                            val intent = Intent(baseContext, PredictionListActivity::class.java)
+                            startActivity(intent)
+                        } else {
+                            hideProgress()
+                            toast("Sign Up Failed: ${task.exception?.message}")
+                        }
+                    }
             }
         }
 
