@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_prediction_list.*
 import org.jetbrains.anko.*
 import org.wit.fatpredictor.R
@@ -21,8 +22,12 @@ class PredictionListActivity : AppCompatActivity(), PredictListener {
         setContentView(R.layout.activity_prediction_list)
         app = application as MainApp
 
-        toolbar.title = title
+        toolbar.title = "Predictions"
         setSupportActionBar(toolbar)
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            toolbar.title = "${user.email} Predictions"
+        }
 
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager

@@ -11,6 +11,7 @@ import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 import org.wit.fatpredictor.R
+import org.wit.fatpredictor.models.PredictModel
 
 class SignUpActivity : AppCompatActivity(), AnkoLogger {
 
@@ -19,21 +20,30 @@ class SignUpActivity : AppCompatActivity(), AnkoLogger {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
         info("SignIn Activity Started...")
+        var predict = PredictModel()
+        hideProgress()
 
         btnRegester.setOnClickListener() {
             //val userName = newUsername.text.toString()
             showProgress()
-            val email = newEmail.text.toString()
-            val password = newPassword.text.toString()
-            auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    hideProgress()
-                    val intent = Intent(baseContext, PredictionListActivity::class.java)
-                    startActivity(intent)
-                } else {
-                    hideProgress()
-                    toast("Sign Up Failed: ${task.exception?.message}")
-                }
+            if(newEmail.text.toString().isEmpty() || newPassword.text.toString().isEmpty()){
+                toast("Please fill in required fields.")
+                hideProgress()
+            } else {
+                val email = newEmail.text.toString()
+                val password = newPassword.text.toString()
+                auth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            hideProgress()
+
+                            val intent = Intent(baseContext, PredictionListActivity::class.java)
+                            startActivity(intent)
+                        } else {
+                            hideProgress()
+                            toast("Sign Up Failed: ${task.exception?.message}")
+                        }
+                    }
             }
         }
 

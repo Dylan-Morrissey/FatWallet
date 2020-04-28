@@ -45,27 +45,33 @@ class LoginActivity : AppCompatActivity(), AnkoLogger {
 
         btnSignIn.setOnClickListener() {
             showProgress()
-            val email = loginEmail.text.toString()
-            val password = loginPassword.text.toString()
-            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this) {task ->
-                if (task.isSuccessful){
-                    if (fireStore != null){
-                        fireStore!!.fetchPredictions {
+            if(loginEmail.text.toString().isEmpty() || loginPassword.text.toString().isEmpty()){
+                toast("Please fill in required fields.")
+                hideProgress()
+            } else{
+                val email = loginEmail.text.toString()
+                val password = loginPassword.text.toString()
+                auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this) {task ->
+                    if (task.isSuccessful){
+                        if (fireStore != null){
+                            fireStore!!.fetchPredictions {
+                                hideProgress()
+                                val intent = Intent(baseContext, PredictionListActivity::class.java)
+                                startActivity(intent)
+                            }
+                        } else {
                             hideProgress()
                             val intent = Intent(baseContext, PredictionListActivity::class.java)
                             startActivity(intent)
                         }
                     } else {
                         hideProgress()
-                        val intent = Intent(baseContext, PredictionListActivity::class.java)
-                        startActivity(intent)
+                        toast("Sign In Failed: ${task.exception?.message}")
                     }
-                } else {
-                    hideProgress()
-                    toast("Sign In Failed: ${task.exception?.message}")
                 }
             }
-        }
+
+    }
     }
 
     fun showProgress() {
