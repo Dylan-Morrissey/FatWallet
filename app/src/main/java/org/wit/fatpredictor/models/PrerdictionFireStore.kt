@@ -43,6 +43,7 @@ class PredictionFireStore(val context: Context) : PredictionStore, AnkoLogger {
         if (foundPrediction != null) {
             foundPrediction.weight = prediction.weight
             foundPrediction.height = prediction.height
+            foundPrediction.age = prediction.age
             foundPrediction.image = prediction.image
         }
         db.child("users").child(userId).child("predictions").child(prediction.fbId).setValue(prediction)
